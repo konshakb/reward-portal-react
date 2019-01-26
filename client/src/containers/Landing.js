@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Button, Divider, Header, Message } from "semantic-ui-react";
+
 // import logo from './logo.svg';
 
 
@@ -16,8 +18,10 @@ class Landing extends Component {
       <div className="App">
         <header className="App-header">
           <p>
-            Welcome to the landing page
+           <Header> Welcome to the landing page</Header>
+
           </p>
+          <Button content='Primary' primary />
           {/* <button onClick={apiTestGet}>API Test</button> */}
           <a
             className="App-link"

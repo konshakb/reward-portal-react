@@ -4,13 +4,20 @@ import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import Landing from './containers/Landing';
+import Homepage from './containers/Homepage';
+import Signin from './containers/Signin';
+import Signup from './containers/Signup';
 import * as serviceWorker from './serviceWorker';
+
 
 const routing = (
     <Router>
         <div>
+            <Route path='/' exact component={Homepage} />
             <Route path='/app' component={App} />
-            <Route path='/' component={Landing} />
+            <Route path='/signin' component={Signin} />
+            <Route path='/signup' component={Signup} />
+            
         </div>
     </Router>
 )
