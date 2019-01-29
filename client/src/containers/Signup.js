@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import { Button, Form, Grid, Header, Image, Message, Segment, Input } from 'semantic-ui-react';
+import * as actions from '../actions';
 import semanticFormField from '../components/SemanticForm';
 
 class Signup extends Component {
 
   onSubmit = (formProps) => {
     console.log(formProps);
+    this.props.signup(formProps, () => {
+      this.props.history.push('/feature');
+    });
   };
    
   render() {
@@ -35,11 +41,10 @@ class Signup extends Component {
          
           <Form size='large' onSubmit={handleSubmit(this.onSubmit)}>
             <Segment stacked>
-              {/* TODO: Refactor to use props */}
               <Field name="email" component={semanticFormField} as={Form.Input} icon='mail' iconPosition='left' type="text" placeholder="Email" />
               <Field name="password" component={semanticFormField} as={Form.Input} icon='lock' iconPosition='left' type="text" placeholder="Password" />
               <Field name="confirm-password" component={semanticFormField} as={Form.Input} icon='lock' iconPosition='left' type="text" placeholder="Confirm Password" />
-  
+              <div>{this.props.errorMessage}</div>
               <Button color='teal' fluid size='large'>
                 Submit
               </Button>
@@ -51,6 +56,12 @@ class Signup extends Component {
   )}  
 }
 
+function mapStateToProps(state) {
+  return { errorMessage: state.auth.errorMessage };
+}
 
-// export default reduxForm({ form: 'signup'}, LoginForm);
-export default reduxForm({ form: 'signup'})(Signup);
+export default compose (
+  connect(mapStateToProps, actions),
+  reduxForm({ form: 'signup'})
+)(Signup);
+
