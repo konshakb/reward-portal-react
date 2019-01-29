@@ -1,5 +1,7 @@
 const mysql = require('./database/dbcon.js');
 const Authentication = require('./controllers/authentication');
+const passportService = require('./services/passport');
+const passport = require('passport');
 
 const getUserByEmail = function(email) {
     return new Promise(function(resolve, reject) {
@@ -13,6 +15,13 @@ const getUserByEmail = function(email) {
 }
 
 module.exports = function(app) {
+    // Intercepts request
+    const requireAuth = passport.authenticate('jwt', { session: false });
+
+    app.get('/', requireAuth, function(req, res) {
+        res.send({ hi: 'there' });
+    })
+
     // Test routes
     app.get('/api/test', function(req, res, next) {
         console.log('Established connection to /api/test');

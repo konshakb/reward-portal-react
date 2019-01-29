@@ -3,7 +3,7 @@ const config = require('../config');
 const jwt = require('jwt-simple');
 const mysql = require('../database/dbcon.js');
 
-const getUserByEmail = function(email) {
+const findUserByEmail = function(email) {
     return new Promise(function(resolve, reject) {
         const params = [email];
         mysql.pool.query('SELECT password FROM user WHERE email = ?', params,
@@ -48,7 +48,7 @@ exports.signup = function(req, res, next) {
         return res.status(422).send({ error: 'You must provide email and password.'});
     }
     // Confirm if a user with the given email exists
-    getUserByEmail(email)
+    findUserByEmail(email)
         .then(user => {
             // If a user with email does exist, return an error
             if (user.length === 1) {
@@ -59,6 +59,7 @@ exports.signup = function(req, res, next) {
                 .then(result => {
                     console.log('Result of newUser', result);
                     // Respond to request indicating user was created
+                    // TODO: Modify this later since admin is creating the account
                     res.send({ token: tokenForUser(result) });
                 })
         });
