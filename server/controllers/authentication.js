@@ -1,4 +1,6 @@
 const mysql = require('../database/dbcon.js');
+const bcrypt = require('bcrypt-nodejs');
+
 const getUserByEmail = function(email) {
     return new Promise(function(resolve, reject) {
         const params = [email];
@@ -12,20 +14,32 @@ const getUserByEmail = function(email) {
 
 const createUser = function(email, password) {
     return new Promise(function(resolve, reject) {
-        const params = [email, password];
-        const sql = `INSERT INTO user (email, password) VALUES ('${email}','${password}')`;
-        mysql.pool.query(sql, function(err, result) {
+        bcrypt.genSalt(10, function(err, salt) {
+            let hashedPassword = '';
             if (err) reject(err);
-            resolve(result);
-        });
+            bcrypt.hash(password, salt, null, function(err, hash) {
+                if (err) reject(err);
+                hashedPassword = hash;
+                const params = [email, password];
+                const sql = `INSERT INTO user (email, password) VALUES ('${email}','${hashedPassword}')`;
+                mysql.pool.query(sql, function(err, result) {
+                    if (err) reject(err);
+                    resolve(result);
+                });
+            })
+        })
     })
 }
 
 // Promises or async?
 exports.signup = function(req, res, next) {
-    console.log(req.body);
     const email = req.body.email;
     const password = req.body.password;
+    
+    // TODO - Add checks for other sign up information once user schema is updated from null
+    if (!email || !password) {
+        return res.status(422).send({ error: 'You must provide email and password.'});
+    }
     // Confirm if a user with the given email exists
     getUserByEmail(email)
         .then(user => {
