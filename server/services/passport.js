@@ -29,20 +29,6 @@ const findUserByEmail = function(email) {
     })
 }
 
-// TODO: FIX SALT PASSWORD, DOESN'T MATCH ORIGINAL SALTED PASSWORD
-const saltPassword = function(password) {
-    console.log("Password being salted: ", password);
-    return new Promise(function(resolve, reject) {
-        bcrypt.genSalt(10, function(err, salt) {
-            if (err) reject(err);
-            bcrypt.hash(password, salt, null, function(err, hash) {
-                if (err) reject(err);
-                resolve(hash);
-            })
-        })
-    })
-}
-
 const comparePassword = function(password, hashedPassword) {
     return new Promise(function (resolve, reject) {
         bcrypt.compare(password, hashedPassword, function(err, res)  {
@@ -58,53 +44,24 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
     // Verify this username and password
     findUserByEmail(email)
         .then(userResult => {
-            // console.log('Result from locallogin', result);
-            // console.log('original password', password);
-            // console.log('salted password', saltPassword(password));
-            // Could not locate user
+            // If user could not be found
             if (userResult.length === 0) {
                 return done(null, false);
             }
+            // Hashed password queried from database
+            const hashedPassword = userResult[0]['password'];
             // Compare password if user email exists
-            return comparePassword(password, userResult[0]['password'])
+            // comparePassword returns true if password + salt matches the hashedPassword
+            return comparePassword(password, hashedPassword)
                 .then(passwordResult => {
+                    // Call done if username and password are correct
                     if (passwordResult) {
-                        console.log('passwordResult', passwordResult);
                         return done(null, passwordResult);
                     }
+                    // Call done with false if password is incorrect
                     return done(null, false);
-                })
-
-            // bcryptHelper.generateSalt()
-            //     .then(salt => {
-            //         return bcryptHelper.hashPassword(password, salt)
-            //             .then(hashedPassword => {
-            //                 console.log('hashedPassword ', hashedPassword)
-            //                 console.log('original password', password);
-            //                 if (hashedPassword !== result[0]['password']) {
-            //                     return done(null, false);
-            //                 }
-            //                 return done(null, result);
-            //             })
-            //     })
-
-            // TODO: Original
-            // saltPassword(password)
-            //     .then(saltedPassword  => {
-            //         console.log('saltedPassword', saltedPassword);
-            //         console.log('password', password);
-            //         console.log('result password', result[0]['password']);
-            //         if ('$2a$10$Q3iUipsz0RIhYbw/nbx0yeHJsWRqsmD4AfJjR6gasLqA1Mov0w3a.' !== result[0]['password']) {
-            //             return done(null, false);
-            //         }
-            //         // Found user
-            //         return done(null, result);
-            //     })
-            
-            
+                })   
         })
-    // Call done if username and password are correct
-    // Otherwise, call done with false
 })
 
 // Setup options for JWT strategy
@@ -120,22 +77,17 @@ const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
     // Determine if the  user ID in the payload exists in the database
     findUserById(payload.sub)
         .then(result => {
-            // // If user is not found
-            // if (result.length === 0) {
-            //     return done(err, false);
-            // }
+            // If user exists, call 'done' with that object
             if (result.length === 1) {
                 done(null, result);
             }
-            // Did not find a user
+            // If user does NOT exist, call done without user object
             else {
                 done(null, false);
             }
         });
-    // If it does exist, call 'done' with that object
-    // Otherweise, call done without the user object
 });
 
-// Configure passport to use JWT strategy
-passport.use(jwtLogin);
-passport.use(localLogin);
+// Configure passport to use JWT strategy and local login
+passport.use(jwtLogin); // JWT strategy is for returning users already logged in
+passport.use(localLogin); // Local login is for users logging in for the first time
