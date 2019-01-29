@@ -1,5 +1,7 @@
-const mysql = require('../database/dbcon.js');
 const bcrypt = require('bcrypt-nodejs');
+const config = require('../config');
+const jwt = require('jwt-simple');
+const mysql = require('../database/dbcon.js');
 
 const getUserByEmail = function(email) {
     return new Promise(function(resolve, reject) {
@@ -31,6 +33,11 @@ const createUser = function(email, password) {
     })
 }
 
+function tokenForUser(user) {
+    const timestamp = new Date().getTime();
+    return jwt.encode({ sub: user.insertId, iat: timestamp }, config.secret);
+}
+
 // Promises or async?
 exports.signup = function(req, res, next) {
     const email = req.body.email;
@@ -51,10 +58,10 @@ exports.signup = function(req, res, next) {
             createUser(email, password)
                 .then(result => {
                     console.log('Result of newUser', result);
-                    res.send(result);
+                    // Respond to request indicating user was created
+                    res.send({ token: tokenForUser(result) });
                 })
         });
 
 
-    // Respond to request indicating user was created
 }
