@@ -35,6 +35,11 @@ Create and set new database for this project
 > CREATE DATABASE nihal;
 > USE nihal;
 ```
+Seeding the database
+
+```
+Copy and paste contents of file /nihal_project/server/database/seed.sql into mysql database
+```
 Connect the database to the server
 ```
 Navigate to /nihal_project/server/database/dbcon.js and fill database credentials
