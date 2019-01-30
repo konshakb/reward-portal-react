@@ -10,7 +10,7 @@ import Signin from './containers/Signin';
 import Signup from './containers/Signup';
 import Signout from './containers/Signout';
 import Feature from './containers/Feature';
-import HomepageHeading from './containers/Heading';
+import HomepageHeading from './containers/Landing';
 
 const store = createStore(
     reducers,
@@ -24,7 +24,7 @@ const routing = (
     <Provider store={store}>
         <Router>
             <Homepage>
-                <Route path='/' exact component={HomepageHeading} inverted={true}/>
+                <Route path='/' exact component={HomepageHeading} />
                 <Route path='/signin' component={Signin} />
                 <Route path='/signup' component={Signup} />
                 <Route path='/signout' component={Signout} />
