@@ -7,7 +7,7 @@ class Signout extends Component {
         this.props.signout();
     }
     render() {
-        return <div>You have been logged out</div>
+        return <div style={{'padding-top': '5em'}}>You have been logged out</div>
     }
 }
 

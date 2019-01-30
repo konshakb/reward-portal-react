@@ -3,7 +3,7 @@ import requireAuth from './requireAuth';
 
 class Feature extends Component {
     render() {
-        return <div>Welcome, you are logged in.</div>
+        return <div style={{'padding-top': '5em'}}>Welcome, you are logged in.</div>
     }
 }
 

@@ -33,6 +33,7 @@ class Navbar extends Component {
                             Sign in
                         </Button>
                     </Link>
+
                     <Link to='/signup'>
                         <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
                             Sign Up
@@ -53,23 +54,14 @@ class Navbar extends Component {
                 size='large'
                 >
                 <Container>
-                        <Menu.Item as='a' active>
-                    <Link to='/'>
-                        Home
-                    </Link>
-                        </Menu.Item>
-                <Menu.Item position='right'>
-                    <Link to='/signin'>
-                        <Button as='a' inverted={!true}>
-                            Sign in
-                        </Button>
-                    </Link>
-                    <Link to='/signup'>
-                        <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
-                            Sign Up
-                        </Button>
-                    </Link>
-                </Menu.Item>
+                    <Menu.Item as='a' active>
+                        <Link to='/'>
+                            Home
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item position='right'>
+                        {this.renderLinks()}
+                    </Menu.Item>
                 </Container>
             </Menu>
 
