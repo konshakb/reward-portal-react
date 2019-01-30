@@ -7,7 +7,6 @@ import * as actions from '../actions';
 import semanticFormField from '../components/SemanticForm';
 
 class Signup extends Component {
-
   onSubmit = (formProps) => {
     console.log(formProps);
     this.props.signup(formProps, () => {
@@ -21,11 +20,6 @@ class Signup extends Component {
 
     return (
     <div className='login-form'>
-      {/*
-        Heads up! The styles below are necessary for the correct render of this example.
-        You can do same with CSS, the main idea is that all the elements up to the `Grid`
-        below must have a height of 100%.
-      */}
       <style>{`
         body > div,
         body > div > div,
@@ -41,7 +35,6 @@ class Signup extends Component {
           <Header as='h2' color='teal' textAlign='center'>
             Register
           </Header>
-         
           <Form size='large' onSubmit={handleSubmit(this.onSubmit)}>
             <Segment stacked>
               <Field name="email" component={semanticFormField} as={Form.Input} icon='mail' iconPosition='left' type="text" placeholder="Email" />
