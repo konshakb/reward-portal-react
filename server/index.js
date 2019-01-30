@@ -5,14 +5,12 @@ const morgan = require('morgan');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mysql = require('./database/dbcon.js');
+const port = process.env.PORT || 3001;
 
 app.use(morgan('combined'));
 app.use(bodyParser.json({ type: '*/*' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-
-const port = process.env.PORT || 3001;
 
 router(app);
 

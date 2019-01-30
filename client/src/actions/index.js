@@ -9,6 +9,26 @@ export const signup = (formProps, callback) => async dispatch => {
         localStorage.setItem('token', response.data.token); // Persists user login status through localStorage
         callback(); // User redirected to feature page
     } catch(e) {
-        dispatch({ type: AUTH_ERROR, payload: 'Email in use' })
+        dispatch({ type: AUTH_ERROR, payload: 'Email in use' });
+    }
+};
+
+export const signin = (formProps, callback) => async dispatch => {
+    // formProps contains { email: '', password: '' }
+    try {
+        const response = await axios.post('http://localhost:3001/signin', formProps);
+        dispatch({ type: AUTH_USER, payload: response.data.token });
+        localStorage.setItem('token', response.data.token); // Persists user login status through localStorage
+        callback(); // User redirected to feature page
+    } catch(e) {
+        dispatch({ type: AUTH_ERROR, payload: 'Invalid login' });
+    }
+};
+
+export const signout = () => {
+    localStorage.removeItem('token');
+    return {
+        type: AUTH_USER,
+        payload: ''
     }
 };

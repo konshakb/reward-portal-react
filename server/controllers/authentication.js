@@ -1,61 +1,34 @@
-const bcrypt = require('bcrypt-nodejs');
 const config = require('../config');
 const jwt = require('jwt-simple');
-const mysql = require('../database/dbcon.js');
-
-const findUserByEmail = function(email) {
-    return new Promise(function(resolve, reject) {
-        const params = [email];
-        mysql.pool.query('SELECT password FROM user WHERE email = ?', params,
-        function(err, data) {
-            if (err) reject(err);
-            resolve(data);
-        })
-    })
-}
-
-const createUser = function(email, password) {
-    return new Promise(function(resolve, reject) {
-        bcrypt.genSalt(10, function(err, salt) {
-            let hashedPassword = '';
-            if (err) reject(err);
-            bcrypt.hash(password, salt, null, function(err, hash) {
-                if (err) reject(err);
-                hashedPassword = hash;
-                const params = [email, password];
-                const sql = `INSERT INTO user (email, password) VALUES ('${email}','${hashedPassword}')`;
-                mysql.pool.query(sql, function(err, result) {
-                    if (err) reject(err);
-                    resolve(result);
-                });
-            })
-        })
-    })
-}
+const User = require('../database/queries/user');
 
 function tokenForUser(user) {
     const timestamp = new Date().getTime();
     return jwt.encode({ sub: user.insertId, iat: timestamp }, config.secret);
 }
 
-// Promises or async?
+exports.signin = function(req, res, next) {
+    console.log("Sign in route", User);
+    // User has already had their email and password authorized, only a token is required 
+    res.send({ token: tokenForUser(req.user) });
+}
+
 exports.signup = function(req, res, next) {
     const email = req.body.email;
     const password = req.body.password;
-    
     // TODO - Add checks for other sign up information once user schema is updated from null
     if (!email || !password) {
         return res.status(422).send({ error: 'You must provide email and password.'});
     }
     // Confirm if a user with the given email exists
-    findUserByEmail(email)
+    User.findByEmail(email)
         .then(user => {
             // If a user with email does exist, return an error
             if (user.length === 1) {
                 return res.status(422).send({ error: 'Email is in use' });
             }
             // If a user with email does not exist, create and save user record
-            createUser(email, password)
+            User.create(email, password)
                 .then(result => {
                     console.log('Result of newUser', result);
                     // Respond to request indicating user was created

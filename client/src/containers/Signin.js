@@ -1,48 +1,62 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { reduxForm, Field } from 'redux-form';
+import { Button, Form, Grid, Header, Image, Message, Segment, Input } from 'semantic-ui-react';
+import * as actions from '../actions';
+import semanticFormField from '../components/SemanticForm';
 
-const LoginForm = () => (
-  <div className='login-form'>
-    {/*
-      Heads up! The styles below are necessary for the correct render of this example.
-      You can do same with CSS, the main idea is that all the elements up to the `Grid`
-      below must have a height of 100%.
-    */}
-    <style>{`
-      body > div,
-      body > div > div,
-      body > div > div > div.login-form {
-        height: 100%;
-      }
-    `}</style>
-    <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
-      <Grid.Column style={{ maxWidth: 450 }}>
-        <Header as='h2' color='teal' textAlign='center'>
-            Log-in to your account
-        </Header>
-        <Form size='large'>
-          <Segment stacked>
-            <Form.Input fluid icon='user' iconPosition='left' placeholder='E-mail address' />
-            <Form.Input
-              fluid
-              icon='lock'
-              iconPosition='left'
-              placeholder='Password'
-              type='password'
-            />
+class Signin extends Component {
 
-            <Button color='teal' fluid size='large'>
-              Login
-            </Button>
-          </Segment>
-        </Form>
-        <Message>
-          New to us? <Link to='/signup'><a href='#'>Sign Up</a></Link>
-        </Message>
-      </Grid.Column>
-    </Grid>
-  </div>
-)
+  onSubmit = (formProps) => {
+    console.log(formProps);
+    this.props.signin(formProps, () => {
+      this.props.history.push('/feature');
+    });
+  };
+   
+  render() {
 
-export default LoginForm
+    const { handleSubmit } = this.props; // handleSubmit provided by redux form
+    return (
+    <div className='login-form'>
+      <style>{`
+        body > div,
+        body > div > div,
+        body > div > div > div.login-form {
+          height: 100%;
+        }
+        .login-form {
+          padding-top: 5em
+        }
+      `}</style>
+      <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Header as='h2' color='teal' textAlign='center'>
+            Sign In
+          </Header>
+         
+          <Form size='large' onSubmit={handleSubmit(this.onSubmit)}>
+            <Segment stacked>
+              <Field name="email" component={semanticFormField} as={Form.Input} icon='mail' iconPosition='left' type="text" placeholder="Email" />
+              <Field name="password" component={semanticFormField} as={Form.Input} icon='lock' iconPosition='left' type="text" placeholder="Password" />
+              <Button color='teal' fluid size='large'>
+                Sign in
+              </Button>
+            </Segment>
+          </Form>
+        </Grid.Column>
+      </Grid>
+    </div>
+  )}  
+}
+
+function mapStateToProps(state) {
+  return { errorMessage: state.auth.errorMessage };
+}
+
+export default compose (
+  connect(mapStateToProps, actions),
+  reduxForm({ form: 'signin'})
+)(Signin);
+

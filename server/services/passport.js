@@ -5,44 +5,13 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
 const mysql = require('../database/dbcon');
 const bcrypt = require('bcrypt-nodejs');
-const bcryptHelper = require('../controllers/encode');
-
-const findUserById = function(id) {
-    return new Promise(function(resolve, reject) {
-        const params = [id];
-        mysql.pool.query('SELECT password FROM user WHERE user_id = ?', params,
-        function(err, data) {
-            if (err) reject(err);
-            resolve(data);
-        })
-    })
-}
-
-const findUserByEmail = function(email) {
-    return new Promise(function(resolve, reject) {
-        const params = [email];
-        mysql.pool.query('SELECT password FROM user WHERE email = ?', params,
-        function(err, data) {
-            if (err) reject(err);
-            resolve(data);
-        })
-    })
-}
-
-const comparePassword = function(password, hashedPassword) {
-    return new Promise(function (resolve, reject) {
-        bcrypt.compare(password, hashedPassword, function(err, res)  {
-            if (err) reject(err);
-            resolve(res);
-        })
-    })
-}
+const User = require('../database/queries/user');
     
 // Create local strategy
 const localOptions = { usernameField: 'email' };
 const localLogin = new LocalStrategy(localOptions, function(email, password, done) {
     // Verify this username and password
-    findUserByEmail(email)
+    User.findByEmail(email)
         .then(userResult => {
             // If user could not be found
             if (userResult.length === 0) {
@@ -52,7 +21,7 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
             const hashedPassword = userResult[0]['password'];
             // Compare password if user email exists
             // comparePassword returns true if password + salt matches the hashedPassword
-            return comparePassword(password, hashedPassword)
+            return User.comparePassword(password, hashedPassword)
                 .then(passwordResult => {
                     // Call done if username and password are correct
                     if (passwordResult) {
@@ -75,7 +44,7 @@ const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
     // Payload is the decoded JWT token
     console.log('payload', payload);
     // Determine if the  user ID in the payload exists in the database
-    findUserById(payload.sub)
+    User.findUserById(payload.sub)
         .then(result => {
             // If user exists, call 'done' with that object
             if (result.length === 1) {
