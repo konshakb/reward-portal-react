@@ -1,0 +1,11 @@
+{
+    "client_id":"435450605857-j0nj71p894qm4kitgovo5a5sbtblml8n.apps.googleusercontent.com",
+    "project_id":"nihal-230723",
+    "auth_uri":"https://accounts.google.com/o/oauth2/auth",
+    "token_uri":"https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret":"Prom0HUx8njS1B5qeyCl7RTG",
+    "redirect_uris":["https://developers.google.com/oauthplayground/"],
+    "refresh_token": "1/r6ePQiBcLMissi3wOCG_nif1lDBHuH-7LLchorPdT0U",
+    "access_token": "ya29.GlunBusBmW8A3OVKr_REhyfLXXCypK5ALPdlyTGQJ-i3CjeFgvO_H7s0xJAxCgKXUTpMwj5OvtSpUCfLTxJSq8qeOKw5P8caITLUYxs8TQCqUCBX7xUNqmoPmfu0"
+}
