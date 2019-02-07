@@ -10,20 +10,40 @@ class Navbar extends Component {
     }
     renderLinks() {
         if (this.props.authenticated) {
-            return (
-                <div>
-                    <Link to='/feature'>
-                        <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
-                            Feature
-                        </Button>
-                    </Link>
-                     <Link to='/signout'>
-                        <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
-                            Sign Out
-                        </Button>
-                    </Link>
-                </div>
-            );
+            // Navbar for admin
+            if (this.props.admin) {
+                return (
+                    <div>
+                        <Link to='/admin-feature'>
+                            <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
+                                Admin Feature
+                            </Button>
+                        </Link>
+                         <Link to='/signout'>
+                            <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
+                                Sign Out
+                            </Button>
+                        </Link>
+                    </div>
+                );
+            }
+            // Navbar for regular user
+            else {
+                return (
+                    <div>
+                        <Link to='/feature'>
+                            <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
+                                Feature
+                            </Button>
+                        </Link>
+                         <Link to='/signout'>
+                            <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
+                                Sign Out
+                            </Button>
+                        </Link>
+                    </div>
+                );
+            }
         }
         else {
             return (
@@ -33,18 +53,13 @@ class Navbar extends Component {
                             Sign in
                         </Button>
                     </Link>
-
-                    <Link to='/signup'>
-                        <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
-                            Sign Up
-                        </Button>
-                    </Link>
                 </div>
             )
         }
     }
     
     render() {
+        console.log('Navbar props:', this.props);
         const { fixed } = this.state
         return (
             <Menu
@@ -70,7 +85,11 @@ class Navbar extends Component {
 }
 
 function mapStateToProps(state) {
-    return { authenticated: state.auth.authenticated };
+    console.log('state', state);
+    return { 
+        authenticated: state.auth.authenticated,
+        admin: state.auth.admin
+     };
 }
 
 export default connect(mapStateToProps)(Navbar);

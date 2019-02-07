@@ -8,9 +8,12 @@ function tokenForUser(user) {
 }
 
 exports.signin = function(req, res, next) {
-    console.log("Sign in route", User);
     // User has already had their email and password authorized, only a token is required 
-    res.send({ token: tokenForUser(req.user) });
+
+    // TODO: Query user status and send back admin status along with token. 
+    // Provides token and admin status of user
+    console.log('Signin: ', req.user[0].admin);
+    res.send({ token: tokenForUser(req.user), admin: req.user[0].admin === 0 ? false : true });
 }
 
 exports.signup = function(req, res, next) {
@@ -28,6 +31,7 @@ exports.signup = function(req, res, next) {
                 return res.status(422).send({ error: 'Email is in use' });
             }
             // If a user with email does not exist, create and save user record
+            // User.create(email, password)
             User.create(email, password)
                 .then(result => {
                     console.log('Result of newUser', result);
@@ -36,6 +40,4 @@ exports.signup = function(req, res, next) {
                     res.send({ token: tokenForUser(result) });
                 })
         });
-
-
 }

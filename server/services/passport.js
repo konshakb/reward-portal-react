@@ -3,8 +3,6 @@ const config = require('../config');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
-const mysql = require('../database/dbcon');
-const bcrypt = require('bcrypt-nodejs');
 const User = require('../database/queries/user');
     
 // Create local strategy
@@ -25,7 +23,7 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
                 .then(passwordResult => {
                     // Call done if username and password are correct
                     if (passwordResult) {
-                        return done(null, passwordResult);
+                        return done(null, userResult);
                     }
                     // Call done with false if password is incorrect
                     return done(null, false);
@@ -42,7 +40,7 @@ const jwtOptions = {
 // Create JWT strategy
 const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
     // Payload is the decoded JWT token
-    console.log('payload', payload);
+    // console.log('payload', payload);
     // Determine if the  user ID in the payload exists in the database
     User.findUserById(payload.sub)
         .then(result => {

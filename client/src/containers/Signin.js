@@ -9,13 +9,16 @@ import semanticFormField from '../components/SemanticForm';
 class Signin extends Component {
 
   onSubmit = (formProps) => {
-    console.log(formProps);
     this.props.signin(formProps, () => {
-      this.props.history.push('/feature');
+      if (this.props.admin) this.props.history.push('/admin-feature');
+      else this.props.history.push('/feature');
     });
   };
 
   render() {
+
+    console.log('props from signin', this.props);
+
     const { handleSubmit } = this.props; // handleSubmit provided by redux form
     return (
       <div className='login-form'>
@@ -38,7 +41,7 @@ class Signin extends Component {
             <Form size='large' onSubmit={handleSubmit(this.onSubmit)}>
               <Segment stacked>
                 <Field name="email" component={semanticFormField} as={Form.Input} icon='mail' iconPosition='left' type="text" placeholder="Email" />
-                <Field name="password" component={semanticFormField} as={Form.Input} icon='lock' iconPosition='left' type="text" placeholder="Password" />
+                <Field name="password" component={semanticFormField} as={Form.Input} icon='lock' iconPosition='left' type="password" placeholder="Password" />
                 <Button color='teal' fluid size='large'>
                   Sign in
                 </Button>
@@ -52,7 +55,10 @@ class Signin extends Component {
 }
 
 function mapStateToProps(state) {
-  return { errorMessage: state.auth.errorMessage };
+  return { 
+    errorMessage: state.auth.errorMessage,
+    admin: state.auth.admin
+  };
 }
 
 export default compose (

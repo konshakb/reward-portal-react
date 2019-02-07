@@ -17,7 +17,9 @@ export const signin = (formProps, callback) => async dispatch => {
     // formProps contains { email: '', password: '' }
     try {
         const response = await axios.post('http://localhost:3001/signin', formProps);
-        dispatch({ type: AUTH_USER, payload: response.data.token });
+        // TODO: Send admin status from response to Redux
+        console.log('response from actions', response);
+        dispatch({ type: AUTH_USER, payload: response.data.token, admin: response.data.admin });
         localStorage.setItem('token', response.data.token); // Persists user login status through localStorage
         callback(); // User redirected to feature page
     } catch(e) {

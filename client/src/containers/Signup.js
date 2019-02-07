@@ -38,8 +38,8 @@ class Signup extends Component {
           <Form size='large' onSubmit={handleSubmit(this.onSubmit)}>
             <Segment stacked>
               <Field name="email" component={semanticFormField} as={Form.Input} icon='mail' iconPosition='left' type="text" placeholder="Email" />
-              <Field name="password" component={semanticFormField} as={Form.Input} icon='lock' iconPosition='left' type="text" placeholder="Password" />
-              <Field name="confirm-password" component={semanticFormField} as={Form.Input} icon='lock' iconPosition='left' type="text" placeholder="Confirm Password" />
+              <Field name="password" component={semanticFormField} as={Form.Input} icon='lock' iconPosition='left' type="password" placeholder="Password" />
+              <Field name="confirm-password" component={semanticFormField} as={Form.Input} icon='lock' iconPosition='left' type="password" placeholder="Confirm Password" />
               <div>{this.props.errorMessage}</div>
               <Button color='teal' fluid size='large'>
                 Submit
