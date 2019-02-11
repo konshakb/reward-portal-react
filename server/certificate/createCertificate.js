@@ -7,9 +7,19 @@ const fs = require('fs')
 const sig_path = path.resolve('./signatures').replace(/\\/g, '/') + '/';
 const bg_path = path.resolve('./').replace(/\\/g, '/') + '/';
 
+function sleep (time) {
+	return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+function mailCert(certInfo) {
+	sleep(5000).then(() => {
+		const { email } = require("./mailCertificate.js")
+		email(certInfo);
+	  })
+}
+
 // builds latex file and outputs to PDF in current dir
-// TODO: add methods to email certificate to recipient email
-function makePDF(fs) {
+function makePDF(certInfo) {
 	const input = fs.createReadStream("./temp_cert.tex")
 	const output = fs.createWriteStream('./certificate.pdf')
 	const pdf = latex(input)
@@ -18,41 +28,56 @@ function makePDF(fs) {
 	pdf.on('error', err => console.error(err))
 	pdf.on('finish', () => console.log('PDF generated!'))
 	fs.unlinkSync("./temp_cert.tex") // delete temp file
+	mailCert(certInfo);
 }
 
-// replaces latex template placeholder data with database data and creates a temp file
+
+function read(srcPath) {
+    return new Promise(function (resolve, reject) {
+        fs.readFile(srcPath, 'utf8', (err, data) => {
+            if (err) {
+                reject(err)
+            } else {
+				var certFill = {
+					TYPE_AWARD: certInfo.awardType,
+					RECIPIENT: certInfo.recipient,
+					SENDER: certInfo.sender,
+					DATE_AWARDED: certInfo.date,
+					SIGNATURE: sig_path + certInfo.signature,
+					BACKGROUND_IMG: bg_path + 'bg.png'	// eventually will hardcode into latex template
+				};
+				results = data.replace(/TYPE_AWARD|RECIPIENT|SENDER|DATE_AWARDED|SIGNATURE|BACKGROUND_IMG/gi, (matched) =>{
+					return certFill[matched];
+				});
+                resolve(results);
+            }
+        });
+    })
+}
+
+function write(savPath, data) {
+    return new Promise(function (resolve, reject) {
+        fs.writeFile(savPath, data, 'utf8', (err)=>{
+            if (err) {
+                reject(err)
+            } else {
+                resolve();
+            }
+        });
+    })
+}
+
 function editTemplate(certInfo) {
-	fs.copyFile("./cert_template.tex", "./temp_cert.tex", (err) => {
-		if (err) throw err;
-		console.log('temporary template updated with data');
-
-		fs.readFile("./temp_cert.tex", 'utf8', (err, data) =>{
-			if (err) return console.log(err);
-
-			var certFill = {
-				TYPE_AWARD: certInfo.awardType,
-				RECIPIENT: certInfo.recipient,
-				SENDER: certInfo.sender,
-				DATE_AWARDED: certInfo.date,
-				SIGNATURE: sig_path + certInfo.signature,
-				BACKGROUND_IMG: bg_path + 'bg.png'	// eventually will hardcode into latex template
-			};
-
-			result = data.replace(/TYPE_AWARD|RECIPIENT|SENDER|DATE_AWARDED|SIGNATURE|BACKGROUND_IMG/gi, (matched) =>{
-				return certFill[matched];
-			});
-
-			fs.writeFile("./temp_cert.tex", result, 'utf8', (err) =>{
-				if (err) return console.log(err);
-				else makePDF(fs);
-			});
-		});
-	});
+	read("./cert_template.tex").then(function(results){
+	return write("./temp_cert.tex",results);
+	 }).then(function(){
+		makePDF(certInfo) 
+	 })
 }
-
 
 function getAwardType(awardID) {
 	certInfo = {}
+	mysql.pool.connect()
 	mysql.pool.query(
 	`SELECT award_type.award_name 
 	FROM (award INNER JOIN award_type on award.type = award_type.award_type_id) 
@@ -63,11 +88,10 @@ function getAwardType(awardID) {
 			var awardType = JSON.parse(JSON.stringify(results[0]));
 			certInfo.awardType = awardType.award_name;
 			getRecipient(awardID, certInfo);
+			
 		}
   });
 }
-
-
 
 function getRecipient(awardID, certInfo) {
 	mysql.pool.query(
@@ -110,8 +134,10 @@ function getDate(awardID, certInfo) {
 		else {
 			var date = JSON.parse(JSON.stringify(results[0]));
 			certInfo.date = date.award_date;
+			mysql.pool.end()
 			editTemplate(certInfo);
 		}
   });
 }
-//getAwardType(3);
+
+getAwardType(3);

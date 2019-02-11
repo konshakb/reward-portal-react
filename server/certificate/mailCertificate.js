@@ -1,9 +1,10 @@
 const nodemailer = require("nodemailer");
 const oauth = require('./oauth.json')
+const path = require('path')
+const cert_path = path.resolve('./').replace(/\\/g, '/') + '/';
 
-// need to set this up to be called from the createCert methods 
-async function main() {
-
+ module.exports = {
+     email: function(certInfo) {
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -14,20 +15,20 @@ async function main() {
             clientId: oauth.client_id,
             clientSecret: oauth.client_secret,
             refreshToken: oauth.refresh_token,
-            accessToken: oauth.access_token // check that this is updating later
+            accessToken: oauth.access_token
         }
     });
 
     let mailOptions = {
         from: 'nihal.capstone@gmail.com',
-        to: 'krista.pratico@gmail.com', // this needs to be the recipient email from the cert object
+        to: certInfo.email, 
         subject: "Nihal Team ~ Congrats! You've been awarded!",
         html: `<p><h2>Congratuations!<h2></p>
-        Your colleague has awarded you for all of your hard work. Please see attached certificate.<br>
+        Your colleague has awarded you for all of your hard work. Please see the attached certificate.<br>
         <br>Sincerely,<br> The Nihal Team<br>`,
         attachments: {
             filename: 'certificate.pdf',
-            path: 'C:/Users/Krista/Desktop/CSC/Capstone/server/certificate/certificate.pdf' // need to fix this path
+            path: cert_path + 'certificate.pdf' 
         }
     };
 
@@ -37,6 +38,6 @@ async function main() {
         else console.log(r);
         transporter.close();
     });
-}
 
-main().catch(console.error);
+}
+};
