@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { AUTH_USER, AUTH_ERROR } from './types';
+import { ROOT_URL } from '../constants';
 
 export const getEmployee = (callback) => async dispatch => {
     try {
