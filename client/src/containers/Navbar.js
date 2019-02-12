@@ -19,6 +19,11 @@ class Navbar extends Component {
                                 Admin Feature
                             </Button>
                         </Link>
+                        <Link to='/create-user'>
+                            <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
+                                Create User
+                            </Button>
+                        </Link>
                          <Link to='/signout'>
                             <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
                                 Sign Out
