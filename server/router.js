@@ -1,4 +1,3 @@
-const mysql = require('./database/dbcon.js');
 const Authentication = require('./controllers/authentication');
 const passportService = require('./services/passport');
 const passport = require('passport');
@@ -8,4 +7,5 @@ module.exports = function(app) {
     const requireSignin = passport.authenticate('local', { session: false });
     app.post('/signin', requireSignin, Authentication.signin);
     app.post('/signup', Authentication.signup);    
+    app.get('/employee', Authentication.getEmployee)
 }

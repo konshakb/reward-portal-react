@@ -10,12 +10,17 @@ import Signin from './containers/Signin';
 import Signup from './containers/Signup';
 import Signout from './containers/Signout';
 import Feature from './containers/Feature';
+import AdminFeature from './containers/AdminPage';
+import CreateUser from './containers/CreateUser';
 import HomepageHeading from './containers/Landing';
+import Profile from './containers/Profile';
+
 
 const store = createStore(
     reducers,
     {
-        auth: {authenticated: localStorage.getItem('token') }
+        auth: {authenticated: localStorage.getItem('token') },
+        admin: false
     },
     applyMiddleware(reduxThunk)
 );
@@ -29,6 +34,9 @@ const routing = (
                 <Route path='/signup' component={Signup} />
                 <Route path='/signout' component={Signout} />
                 <Route path='/feature' component={Feature} />     
+                <Route path='/admin-feature' component={AdminFeature} />     
+                <Route path='/create-user' component={CreateUser} />     
+                <Route path='/profile' component={Profile} />     
             </Homepage>
         </Router>
     </Provider>

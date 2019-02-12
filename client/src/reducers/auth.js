@@ -1,13 +1,15 @@
 import { AUTH_USER, AUTH_ERROR } from '../actions/types';
 const INITIAL_STATE = {
     authenticated: '',
-    errorMessage: ''
+    errorMessage: '',
+    admin: ''
 };
 
 export default function(state = INITIAL_STATE, action) {
+    console.log("action", action);
     switch(action.type) {
         case AUTH_USER:
-            return { ...state, authenticated: action.payload };
+            return { ...state, authenticated: action.payload, admin: action.admin };
         case AUTH_ERROR:
             return { ...state, errorMessage: action.payload };
         default:

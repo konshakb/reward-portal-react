@@ -11,7 +11,7 @@ class DesktopContainer extends Component {
   showFixedMenu = () => this.setState({ fixed: true })
   render() {
     const { children } = this.props
-    console.log('this.props', this.props.location);
+
     return (
       <div>
         <Visibility
