@@ -59,6 +59,10 @@ INSERT INTO user (email, password) VALUES
 ('Bob@gmail.com', 'bobspassword'),
 ('Mary@gmail.com', 'maryspassword');
 
+INSERT INTO user (email, password, admin) VALUES
+('Bob@gmail.com', 'bobspassword', 1),
+('Mary@gmail.com', 'maryspassword');
+
 
 -- Award table
 CREATE TABLE `award` (

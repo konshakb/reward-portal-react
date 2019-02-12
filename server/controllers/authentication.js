@@ -7,13 +7,22 @@ function tokenForUser(user) {
     return jwt.encode({ sub: user.insertId, iat: timestamp }, config.secret);
 }
 
+exports.getEmployee = function(req, res, next) {
+
+}
+
 exports.signin = function(req, res, next) {
     // User has already had their email and password authorized, only a token is required 
 
-    // TODO: Query user status and send back admin status along with token. 
+    // TODO: Send user information and port to Redux
     // Provides token and admin status of user
     console.log('Signin: ', req.user[0].admin);
-    res.send({ token: tokenForUser(req.user), admin: req.user[0].admin === 0 ? false : true });
+    console.log('user', req.user[0]);
+    res.send({ 
+        token: tokenForUser(req.user), 
+        admin: req.user[0].admin === 0 ? false : true,
+        user: req.user[0]
+    });
 }
 
 exports.signup = function(req, res, next) {
@@ -28,7 +37,7 @@ exports.signup = function(req, res, next) {
         .then(user => {
             // If a user with email does exist, return an error
             if (user.length === 1) {
-                return res.status(422).send({ error: 'Email is in use' });
+                return res.status(422).send({ error: 'Email is in use' }); 
             }
             // If a user with email does not exist, create and save user record
             // User.create(email, password)
@@ -38,6 +47,7 @@ exports.signup = function(req, res, next) {
                     // Respond to request indicating user was created
                     // TODO: Modify this later since admin is creating the account
                     res.send({ token: tokenForUser(result) });
+                    // res.send({});
                 })
         });
 }

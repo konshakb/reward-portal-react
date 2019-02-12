@@ -4,7 +4,7 @@ import requireEmployee from './requireEmployee';
 
 class Feature extends Component {
     render() {
-        return <div style={{'padding-top': '5em'}}>Welcome, you are logged in.</div>
+        return <div style={{'paddingTop': '5em'}}>Welcome, you are logged in.</div>
     }
 }
 

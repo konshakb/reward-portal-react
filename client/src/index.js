@@ -11,7 +11,9 @@ import Signup from './containers/Signup';
 import Signout from './containers/Signout';
 import Feature from './containers/Feature';
 import AdminFeature from './containers/AdminPage';
+import CreateUser from './containers/CreateUser';
 import HomepageHeading from './containers/Landing';
+import Profile from './containers/Profile';
 
 
 const store = createStore(
@@ -33,6 +35,8 @@ const routing = (
                 <Route path='/signout' component={Signout} />
                 <Route path='/feature' component={Feature} />     
                 <Route path='/admin-feature' component={AdminFeature} />     
+                <Route path='/create-user' component={CreateUser} />     
+                <Route path='/profile' component={Profile} />     
             </Homepage>
         </Router>
     </Provider>
