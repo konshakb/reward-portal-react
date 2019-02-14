@@ -14,7 +14,7 @@ import AdminFeature from './containers/AdminPage';
 import CreateUser from './containers/CreateUser';
 import HomepageHeading from './containers/Landing';
 import Profile from './containers/Profile';
-
+import CreateAward from './containers/CreateAward';
 
 const store = createStore(
     reducers,
@@ -36,7 +36,8 @@ const routing = (
                 <Route path='/feature' component={Feature} />     
                 <Route path='/admin-feature' component={AdminFeature} />     
                 <Route path='/create-user' component={CreateUser} />     
-                <Route path='/profile' component={Profile} />     
+                <Route path='/profile' component={Profile} />
+                <Route path='/create-award' component={CreateAward} />       
             </Homepage>
         </Router>
     </Provider>
