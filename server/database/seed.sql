@@ -22,18 +22,6 @@ INSERT INTO award_type (award_name) VALUES
 ('Employee of the Week'),
 ('Employee of Century');
 
--- Admin table
-CREATE TABLE `admin` (
-    `admin_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `email` VARCHAR(50) NOT NULL,
-    UNIQUE INDEX `email` (`email`),
-    `password` VARCHAR(30) NOT NULL
-);
-
--- Seed data for admin
-INSERT INTO admin (email, password) VALUES
-('admin@admin.com', 'admin');
-
 -- Use table
 -- Note: All values for user besides email and password set to null
 -- for authentication testing
@@ -44,25 +32,16 @@ CREATE TABLE `user` (
     `password` VARCHAR(100) NOT NULL,
     `first_name` VARCHAR (50) NULL,
     `last_name` VARCHAR(50) NULL,
-    `region_id` INT(11) DEFAULT 1,
+    `region_id` INT(11) NULL,
     CONSTRAINT `fk_region_id`
     FOREIGN KEY(`region_id`) REFERENCES `region` (`region_id`),
     `created_on` DATE NULL,
-    `signature_path` VARCHAR(50),
-    `created_by_admin_id` INT(11) DEFAULT 1,
-    CONSTRAINT `fk_created_by_admin_id`
-    FOREIGN KEY(`created_by_admin_id`) REFERENCES `admin` (`admin_id`)
+    `signature_path` VARCHAR(50) NULL,
+    `admin` INT(11) DEFAULT 0
 );
 
--- Seed data for user table
-INSERT INTO user (email, password) VALUES
-('Bob@gmail.com', 'bobspassword'),
-('Mary@gmail.com', 'maryspassword');
-
 INSERT INTO user (email, password, admin) VALUES
-('Bob@gmail.com', 'bobspassword', 1),
-('Mary@gmail.com', 'maryspassword');
-
+('admin@admin.com', '$2a$10$RyDsLR85bZxm5mqm7Xeh8.rzENrSTC6RvTg.MfUNW8NZA1k6aP3uy', 1);
 
 -- Award table
 CREATE TABLE `award` (
