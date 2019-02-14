@@ -41,7 +41,8 @@ CREATE TABLE `user` (
 );
 
 INSERT INTO user (email, password, admin) VALUES
-('admin@admin.com', '$2a$10$RyDsLR85bZxm5mqm7Xeh8.rzENrSTC6RvTg.MfUNW8NZA1k6aP3uy', 1);
+('admin@admin.com', '$2a$10$RyDsLR85bZxm5mqm7Xeh8.rzENrSTC6RvTg.MfUNW8NZA1k6aP3uy', 1),
+('a@a.com', '$2a$10$EiLglk8ytUdhGZ0dCXrsl.jkHlaJDXdouXBMGiPk7BcacSiYVYpsC', 0);
 
 -- Award table
 CREATE TABLE `award` (
