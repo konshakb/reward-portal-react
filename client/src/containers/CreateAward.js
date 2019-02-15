@@ -67,5 +67,4 @@ function mapStateToProps(state) {
     return { errorMessage: state.auth.errorMessage };
   }
 
-//export default compose (connect(mapStateToProps, actions), reduxForm({ form: 'create-award'}), requireEmployee)(CreateAward);
-export default compose (connect(mapStateToProps, actions), reduxForm({ form: 'create-award'}))(CreateAward);
+export default compose (connect(mapStateToProps, actions), reduxForm({ form: 'create-award'}), requireEmployee)(CreateAward);
