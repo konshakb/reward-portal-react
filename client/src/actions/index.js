@@ -13,7 +13,7 @@ export const getEmployee = (callback) => async dispatch => {
 
 export const createUser = (formProps, callback) => async dispatch => {
     try {
-        const response = await axios.post('http://localhost:3001/signup', formProps);
+        const response = await axios.post(`${ROOT_URL}/signup`, formProps);
         // dispatch({});
         callback();
     }
@@ -25,7 +25,7 @@ export const createUser = (formProps, callback) => async dispatch => {
 export const signup = (formProps, callback) => async dispatch => {
     // formProps contains { email: '', password: '' }
     try {
-        const response = await axios.post('http://localhost:3001/signup', formProps);
+        const response = await axios.post(`${ROOT_URL}/signup`, formProps);
         dispatch({ type: AUTH_USER, payload: response.data.token });
         localStorage.setItem('token', response.data.token); // Persists user login status through localStorage
         callback(); // User redirected to feature page
@@ -37,7 +37,7 @@ export const signup = (formProps, callback) => async dispatch => {
 export const signin = (formProps, callback) => async dispatch => {
     // formProps contains { email: '', password: '' }
     try {
-        const response = await axios.post('http://localhost:3001/signin', formProps);
+        const response = await axios.post(`${ROOT_URL}/signin`, formProps);
         // TODO: Send admin status from response to Redux
         console.log('response from actions', response);
         dispatch({ type: AUTH_USER, payload: response.data.token, admin: response.data.admin });
