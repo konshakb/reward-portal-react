@@ -1,0 +1,40 @@
+<form action="/edit-return" method="get">
+	<fieldset>
+		<legend>Update User:</legend>
+
+		<label>
+			First Name:<br>
+			<input type="text" name="firstname" value="{{content.firstname}}"><br><br>
+		</label>
+		<label>
+			Last Name:<br>
+			<input type="text" name="lastname" value="{{content.lastname}}"><br><br>
+		</label>
+
+		<label>
+			Region:<br>
+			<input type="text" name="region" value="{{content.region}}"><br><br>
+		</label>
+
+		<label>
+			Email:<br>
+			<input type="email" name="email" value="{{content.email}}"><br><br>
+		</label>
+
+		<label>
+			Password:<br>
+			<input type="text" name="password" value="{{content.password}}"><br><br>
+		</label>
+		<label>
+			Confirm Password:<br>
+			<input type="text" name="password2" value="{{content.password2}}"><br><br>
+		</label>
+
+
+		<label><br>
+			<input type="hidden" name="id" value="{{content.id}}">
+			<input id="submit" type="submit" value="Submit">
+		</label>
+
+	</fieldset>
+</form>
