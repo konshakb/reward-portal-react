@@ -4,6 +4,7 @@ import { ROOT_URL } from '../constants';
 
 export const getEmployee = (callback) => async dispatch => {
     try {
+        const response = await axios.get(`${ROOT_URL}/employee`);
 
     }
     catch(e) {
@@ -40,7 +41,7 @@ export const signin = (formProps, callback) => async dispatch => {
         const response = await axios.post(`${ROOT_URL}/signin`, formProps);
         // TODO: Send admin status from response to Redux
         console.log('response from actions', response);
-        dispatch({ type: AUTH_USER, payload: response.data.token, admin: response.data.admin });
+        dispatch({ type: AUTH_USER, payload: response.data.token, admin: response.data.admin, user_id: response.data.user['user_id'] });
         localStorage.setItem('token', response.data.token); // Persists user login status through localStorage
         callback(); // User redirected to feature page
     } catch(e) {

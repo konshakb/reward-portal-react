@@ -9,7 +9,7 @@ export default function(state = INITIAL_STATE, action) {
     console.log("action", action);
     switch(action.type) {
         case AUTH_USER:
-            return { ...state, authenticated: action.payload, admin: action.admin };
+            return { ...state, authenticated: action.payload, admin: action.admin, user_id: action.user_id };
         case AUTH_ERROR:
             return { ...state, errorMessage: action.payload };
         default:
