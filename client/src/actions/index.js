@@ -22,6 +22,19 @@ export const createUser = (formProps, callback) => async dispatch => {
     }
 }
 
+// does the job, but not sure of the correct dispatch call
+export const createAward = (formProps, callback) => async dispatch => {
+    try {
+        const response = await axios.post(`${ROOT_URL}/createaward`, formProps);
+        callback(); // User redirected to feature page
+    }
+    catch(e) {
+        console.log("error creating award") 
+        console.log(formProps)
+        //dispatch({ type: GET_EMPLOYEE, payload: 'Must be a user to create award' });
+    }
+}
+
 export const signup = (formProps, callback) => async dispatch => {
     // formProps contains { email: '', password: '' }
     try {

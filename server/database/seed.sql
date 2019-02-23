@@ -56,8 +56,9 @@ CREATE TABLE `award` (
     `type` INT(11) NOT NULL,
     CONSTRAINT `fk_type`
     FOREIGN KEY(`type`) REFERENCES `award_type` (`award_type_id`),
-    `award_date` DATE NOT NULL
+    `award_date` DATE NOT NULL,
+    `award_time` TIME NOT NULL
 );
 
-INSERT INTO award (recipient_id, sender_id, type, award_date) VALUES
-(1, 2, 1, now());
+INSERT INTO award (recipient_id, sender_id, type, award_date, award_time) VALUES
+(1, 2, 1, '2019-02-22', '11:11:00');

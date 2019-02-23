@@ -37,7 +37,7 @@ const routing = (
                 <Route path='/admin-feature' component={AdminFeature} />     
                 <Route path='/create-user' component={CreateUser} />     
                 <Route path='/profile' component={Profile} />
-                <Route path='/create-award' component={CreateAward} />       
+                <Route path='/createaward' component={CreateAward} />       
             </Homepage>
         </Router>
     </Provider>
