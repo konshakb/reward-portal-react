@@ -41,7 +41,7 @@ class Navbar extends Component {
                                 Feature
                             </Button>
                         </Link>
-                        <Link to='/create-award'>
+                        <Link to='/createaward'>
                             <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
                                 Create Award
                             </Button>
