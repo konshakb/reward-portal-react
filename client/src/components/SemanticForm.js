@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form, Input } from "semantic-ui-react";
+import { Dropdown } from "semantic-ui-redux-form-fields";
 
 export default function semanticFormField({
   input,
@@ -19,6 +20,7 @@ export default function semanticFormField({
       <As
         {...props}
         {...input}
+        Dropdown={Dropdown}
         value={input.value}
         type={type}
         label={label}

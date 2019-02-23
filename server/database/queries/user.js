@@ -35,7 +35,7 @@ module.exports = {
       });
     });
   },
-  create: function(first_name, last_name, region_id, email, password) {
+  create: function(first_name, last_name, region_id, email, password, admin) {
     return new Promise(function(resolve, reject) {
       bcrypt.genSalt(10, function(err, salt) {
         let hashedPassword = "";
@@ -44,9 +44,12 @@ module.exports = {
           if (err) reject(err);
           hashedPassword = hash;
           const params = [email, password];
+          const created_on = todaydate();
+          //var created_on = today.hhgetDate();
+          console.log(created_on);
           console.log(first_name + last_name + region_id);
-          const sql = `INSERT INTO user (first_name, last_name, region_id, email, password) VALUES ('${first_name}','${last_name}', '${region_id}','${email}','${hashedPassword}')`;
-          //const sql = `INSERT INTO user (email, password) VALUES ('${first_name}, ${last_name}, ${region_id}, '${email}','${hashedPassword}')`;
+          const sql = `INSERT INTO user (first_name, last_name, created_on, region_id, email, password, admin) VALUES ('${first_name}','${last_name}','${created_on}', '${region_id}','${email}','${hashedPassword}', '${admin}')`;
+          //const sql = `INSERT INTO user (email, password) VALUES ('${first_name}, ${last_name}, ${reg,ion_id}, '${email}','${hashedPassword}')`;
           mysql.pool.query(sql, function(err, result) {
             if (err) reject(err);
             resolve(result);
@@ -74,3 +77,20 @@ module.exports = {
     });
   }
 };
+function todaydate() {
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; //January is 0!
+  var yyyy = today.getFullYear();
+
+  if (dd < 10) {
+    dd = "0" + dd;
+  }
+
+  if (mm < 10) {
+    mm = "0" + mm;
+  }
+
+  today = yyyy + "-" + mm + "-" + dd;
+  return today;
+}

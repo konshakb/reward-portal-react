@@ -29,6 +29,7 @@ exports.signup = function(req, res, next) {
   const first_name = req.body.first_name;
   const last_name = req.body.last_name;
   const region_id = req.body.region_id;
+  const admin = req.body.admin;
   // TODO - Add checks for other sign up information once user schema is updated from null
   if (!email || !password) {
     return res
@@ -43,7 +44,7 @@ exports.signup = function(req, res, next) {
     }
     // If a user with email does not exist, create and save user record
     // User.create(email, password)
-    User.create(first_name, last_name, region_id, email, password).then(
+    User.create(first_name, last_name, region_id, email, password, admin).then(
       result => {
         console.log("Result of newUser", result);
         // Respond to request indicating user was created

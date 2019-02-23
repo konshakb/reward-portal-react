@@ -15,6 +15,35 @@ import {
 import * as actions from "../actions";
 import semanticFormField from "../components/SemanticForm";
 import requireAdmin from "./requireAdmin";
+const checkboxOptions = [
+  {
+    value: "1",
+    text: "East",
+    key: "1"
+  },
+  {
+    value: "2",
+    text: "Central",
+    key: "2"
+  },
+  {
+    value: "3",
+    text: "West",
+    key: "3"
+  }
+];
+const adminOptions = [
+  {
+    value: "0",
+    text: "User",
+    key: "0"
+  },
+  {
+    value: "1",
+    text: "Admin",
+    key: "1"
+  }
+];
 
 class CreateUser extends Component {
   onSubmit = formProps => {
@@ -70,15 +99,6 @@ class CreateUser extends Component {
                   placeholder="Last Name"
                 />
                 <Field
-                  name="region_id"
-                  component={semanticFormField}
-                  as={Form.Input}
-                  icon="lock"
-                  iconPosition="left"
-                  type="text"
-                  placeholder="Region"
-                />
-                <Field
                   name="email"
                   component={semanticFormField}
                   as={Form.Input}
@@ -95,6 +115,28 @@ class CreateUser extends Component {
                   iconPosition="left"
                   type="password"
                   placeholder="Password"
+                />
+                <Field
+                  name="region_id"
+                  component={semanticFormField}
+                  as={Form.Dropdown}
+                  //icon="lock"
+                  options={checkboxOptions}
+                  placeholder="My Dropdown"
+                  iconPosition="left"
+                  type="text"
+                  placeholder="Region"
+                />{" "}
+                <Field
+                  name="admin"
+                  component={semanticFormField}
+                  as={Form.Dropdown}
+                  //icon="lock"
+                  options={adminOptions}
+                  placeholder="My Dropdown"
+                  iconPosition="left"
+                  type="text"
+                  placeholder="Admin or User"
                 />
                 <div>{this.props.errorMessage}</div>
                 <Button color="teal" fluid size="large">
