@@ -98,7 +98,8 @@ function mapStateToProps(state) {
     console.log('state', state);
     return { 
         authenticated: state.auth.authenticated,
-        admin: state.auth.admin
+        admin: state.auth.admin,
+        user_id: state.auth.user_id
      };
 }
 
