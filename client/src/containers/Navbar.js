@@ -14,6 +14,11 @@ class Navbar extends Component {
             if (this.props.admin) {
                 return (
                     <div>
+                        <Link to='/admin-table'>
+                            <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
+                                Admin Table
+                            </Button>
+                        </Link>
                         <Link to='/admin-feature'>
                             <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
                                 Admin Feature
