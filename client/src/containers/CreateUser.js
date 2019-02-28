@@ -70,27 +70,6 @@ class CreateUser extends Component {
           padding-top: 5em
         }
       `}</style>
-<<<<<<< HEAD
-      <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
-        <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as='h2' color='teal' textAlign='center'>
-            Create a user
-          </Header>
-          <Form size='large' onSubmit={handleSubmit(this.onSubmit)}>
-            <Segment stacked>
-              <Field name="email" component={semanticFormField} as={Form.Input} icon='mail' iconPosition='left' type="text" placeholder="Email" />
-              <Field name="password" component={semanticFormField} as={Form.Input} icon='lock' iconPosition='left' type="password" placeholder="Password" />
-              <div>{this.props.errorMessage}</div>
-              <Button color='teal' fluid size='large'>
-                Submit
-              </Button>
-            </Segment>
-          </Form>
-        </Grid.Column>
-      </Grid>
-    </div>
-  )}  
-=======
         <Grid
           textAlign="center"
           style={{ height: "100%" }}
@@ -171,7 +150,6 @@ class CreateUser extends Component {
       </div>
     );
   }
->>>>>>> 9345c0cb... completed add user form
 }
 
 function mapStateToProps(state) {
