@@ -8,6 +8,7 @@ exports.createaward = function(req, res, next) {
     const awardType = req.body.awardType;
     const date = req.body.date;
     const time = req.body.time
+    const senderID = req.body.senderID
 
     console.log(req.body)
     // Award.getRecipientID(firstName, lastName)
@@ -18,10 +19,9 @@ exports.createaward = function(req, res, next) {
         // }
         
         
-        // this currently submits a random recipient and sender ID.
-        // Correct recipient ID once users can be created with name
-        // Correct sender ID once signed in user exists on store
-        Award.createAward(1, 2, awardType, date, time)
+        // this currently submits a random recipient ID.
+        // TODO: Correct the recipient ID once users can be created with first name / last name
+        Award.createAward(1, senderID, awardType, date, time)
             .then(result => {
             console.log('Result of award', result);
             res.send(result);

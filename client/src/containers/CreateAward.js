@@ -7,19 +7,46 @@ import * as actions from '../actions';
 import semanticFormField from '../components/SemanticForm';
 import requireEmployee from './requireEmployee'
 
+const awardTypeOptions = [
+    {
+      value: "1",
+      text: "Employee of the Day",
+      key: "1"
+    },
+    {
+      value: "2",
+      text: "Employee of the Week",
+      key: "2"
+    },
+    {
+      value: "3",
+      text: "Employee of the Century",
+      key: "3"
+    }
+  ];
 
 class CreateAward extends Component {
+    state = {};
+    componentWillMount() {
+        this.setState({
+            user_id: this.props.user_id
+        })
+
+    }
     onSubmit = (formProps) => {
-        console.log(formProps);
+        formProps.senderID = this.state.user_id;
+        console.log("form props:", formProps);
         this.props.createAward(formProps, () => {
             console.log(formProps);
             // TODO: Determine page to redirect to after award created
           this.props.history.push('/');
         });
       };
-    
+
+
     render() {
         const { handleSubmit } = this.props; 
+
         return (
             <div className='createaward'>
                 <style>{`body > div,
@@ -38,14 +65,10 @@ class CreateAward extends Component {
                         </Header>
                         <Form size='large' onSubmit={handleSubmit(this.onSubmit)}>
                             <Segment stacked>
+                                <Field name="awardType" component={semanticFormField} as={Form.Dropdown} options={awardTypeOptions} type="text" placeholder="Choose Type of Award" />
                                 <Field name="firstName" component={semanticFormField} as={Form.Input} icon='user' iconPosition='left' type="text" placeholder="First Name" />
                                 <Field name="lastName" component={semanticFormField} as={Form.Input} icon='user' iconPosition='left' type="text" placeholder="Last Name" />
                                 <Field name="email" component={semanticFormField} as={Form.Input} icon='mail' iconPosition='left' type="text" placeholder="Email" />
-                                <Field name="awardType" component='select' as={Form.Input}>
-                                    <option value='1'>Employee of the Day</option>
-                                    <option value='2'>Employee of the Week</option>
-                                    <option value='3'>Employee of the Month</option>
-                                    <option value='4'>Employee of the Universe</option></Field><br />
                                 <Field name="date" component={semanticFormField} as={Form.Input} icon='calendar' iconPosition='left' type="date"/>
                                 <Field name="time" component={semanticFormField} as={Form.Input} icon='clock' iconPosition='left' type="time" />
                                 <div>{this.props.errorMessage}</div>
@@ -60,8 +83,12 @@ class CreateAward extends Component {
         )
     }
 }
+// function mapStateToProps(state) {
+//     return { errorMessage: state.auth.errorMessage };
+//   }
 function mapStateToProps(state) {
-    return { errorMessage: state.auth.errorMessage };
-  }
-
+    return { 
+        user_id: state.auth.user_id
+     };
+}
 export default compose (connect(mapStateToProps, actions), reduxForm({ form: 'createaward'}), requireEmployee)(CreateAward);
