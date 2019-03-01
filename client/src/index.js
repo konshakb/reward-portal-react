@@ -16,8 +16,10 @@ import Feature from './containers/Feature';
 import AdminFeature from './containers/AdminPage';
 import CreateUser from './containers/CreateUser';
 import HomepageHeading from './containers/Landing';
-import AdminTable from './containers/AdminTable';
+// import AdminTable from './containers/AdminTable';
 import Profile from './containers/Profile';
+import CreateAward from './containers/CreateAward';
+
 
 const persistConfig = {
     key: 'root',
@@ -46,8 +48,9 @@ const routing = (
                 <Route path='/feature' component={Feature} />     
                 <Route path='/admin-feature' component={AdminFeature} />     
                 <Route path='/create-user' component={CreateUser} />     
-                <Route path='/profile' component={Profile} />     
-                <Route path='/admin-table' component={AdminTable} />     
+                <Route path='/profile' component={Profile} />
+                <Route path='/createaward' component={CreateAward} />         
+                {/* <Route path='/admin-table' component={AdminTable} />      */}
             </Homepage>
         </Router>
         </PersistGate>

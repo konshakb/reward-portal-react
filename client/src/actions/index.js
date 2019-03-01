@@ -12,6 +12,15 @@ export const getEmployee = (callback) => async dispatch => {
     }
 }
 
+export const getRecipients = (result) => async dispatch => {
+    try {
+        return await axios.get(`${ROOT_URL}/getemployees`);
+    }
+    catch(e) {
+        console.log("error getting users") 
+    }
+}
+
 export const createUser = (formProps, callback) => async dispatch => {
     try {
         const response = await axios.post(`${ROOT_URL}/signup`, formProps);
@@ -20,6 +29,19 @@ export const createUser = (formProps, callback) => async dispatch => {
     }
     catch(e) {
         dispatch({ type: AUTH_ERROR, payload: 'Email in use' });
+    }
+}
+
+// does the job, but not sure of the correct dispatch call
+export const createAward = (formProps, callback) => async dispatch => {
+    try {
+        const response = await axios.post(`${ROOT_URL}/createaward`, formProps);
+        callback(); // User redirected to feature page
+    }
+    catch(e) {
+        console.log("error creating award") 
+        console.log(formProps)
+        //dispatch({ type: GET_EMPLOYEE, payload: 'Must be a user to create award' });
     }
 }
 
