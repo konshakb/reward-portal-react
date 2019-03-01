@@ -1,5 +1,5 @@
-const mysql = require('../dbcon');
-const bcrypt = require('bcrypt-nodejs');
+const mysql = require("../dbcon");
+const bcrypt = require("bcrypt-nodejs");
 
 module.exports = {
   findById: function(id) {

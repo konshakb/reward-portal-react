@@ -46,21 +46,20 @@ const adminOptions = [
 ];
 
 class CreateUser extends Component {
-  onSubmit = (formProps) => {
+  onSubmit = formProps => {
     console.log(formProps);
     this.props.createUser(formProps, () => {
-        // TODO: Determine page to redirect to after admin adds user
-      this.props.history.push('/');
+      // TODO: Determine page to redirect to after admin adds user
+      this.props.history.push("/");
     });
   };
-   
-  render() {
 
+  render() {
     const { handleSubmit } = this.props; // handleSubmit provided by redux form
 
     return (
-    <div className='login-form'>
-      <style>{`
+      <div className="login-form">
+        <style>{`
         body > div,
         body > div > div,
         body > div > div > div.login-form {
@@ -156,5 +155,11 @@ function mapStateToProps(state) {
   return { errorMessage: state.auth.errorMessage };
 }
 
-export default compose (connect(mapStateToProps, actions), reduxForm({ form: 'signup'}), requireAdmin)(CreateUser);
-
+export default compose(
+  connect(
+    mapStateToProps,
+    actions
+  ),
+  reduxForm({ form: "signup" }),
+  requireAdmin
+)(CreateUser);

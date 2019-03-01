@@ -1,29 +1,27 @@
-const config = require('../config');
-const jwt = require('jwt-simple');
-const User = require('../database/queries/user');
+const config = require("../config");
+const jwt = require("jwt-simple");
+const User = require("../database/queries/user");
 
 function tokenForUser(user) {
-    const timestamp = new Date().getTime();
-    return jwt.encode({ sub: user.insertId, iat: timestamp }, config.secret);
+  const timestamp = new Date().getTime();
+  return jwt.encode({ sub: user.insertId, iat: timestamp }, config.secret);
 }
 
-exports.getEmployee = function(req, res, next) {
-
-}
+exports.getEmployee = function(req, res, next) {};
 
 exports.signin = function(req, res, next) {
-    // User has already had their email and password authorized, only a token is required 
+  // User has already had their email and password authorized, only a token is required
 
-    // TODO: Send user information and port to Redux
-    // Provides token and admin status of user
-    console.log('Signin: ', req.user[0].admin);
-    console.log('user', req.user[0]);
-    res.send({ 
-        token: tokenForUser(req.user), 
-        admin: req.user[0].admin === 0 ? false : true,
-        user: req.user[0]
-    });
-}
+  // TODO: Send user information and port to Redux
+  // Provides token and admin status of user
+  console.log("Signin: ", req.user[0].admin);
+  console.log("user", req.user[0]);
+  res.send({
+    token: tokenForUser(req.user),
+    admin: req.user[0].admin === 0 ? false : true,
+    user: req.user[0]
+  });
+};
 
 exports.signup = function(req, res, next) {
   const email = req.body.email;
