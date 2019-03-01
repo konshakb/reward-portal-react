@@ -140,4 +140,4 @@ function getDate(awardID, certInfo) {
   });
 }
 
-getAwardType(3);
+getAwardType(38);
