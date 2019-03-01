@@ -12,6 +12,7 @@
     "react-widgets": "^4.4.9",
     "redux": "^4.0.1",
     "redux-form": "^8.1.0",
+    "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "semantic-ui-react": "^0.84.0",
     "semantic-ui-redux-form-fields": "^1.0.1"
