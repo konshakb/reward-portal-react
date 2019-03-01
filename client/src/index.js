@@ -16,7 +16,7 @@ import Feature from './containers/Feature';
 import AdminFeature from './containers/AdminPage';
 import CreateUser from './containers/CreateUser';
 import HomepageHeading from './containers/Landing';
-import AdminTable from './containers/AdminTable';
+// import AdminTable from './containers/AdminTable';
 import Profile from './containers/Profile';
 import CreateAward from './containers/CreateAward';
 
@@ -50,7 +50,7 @@ const routing = (
                 <Route path='/create-user' component={CreateUser} />     
                 <Route path='/profile' component={Profile} />
                 <Route path='/createaward' component={CreateAward} />         
-                <Route path='/admin-table' component={AdminTable} />     
+                {/* <Route path='/admin-table' component={AdminTable} />      */}
             </Homepage>
         </Router>
         </PersistGate>
