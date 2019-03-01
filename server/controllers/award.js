@@ -33,3 +33,14 @@ exports.createaward = function(req, res, next) {
 //})
        
 }
+
+exports.getemployees = function(req, res) {
+    Award.getEmployees()
+    .then(result => {
+    console.log('Result of users', result);
+    res.send(result);
+    })
+    .catch(reject => {
+        console.log(reject)
+    })    
+}

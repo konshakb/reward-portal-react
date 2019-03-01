@@ -12,6 +12,15 @@ export const getEmployee = (callback) => async dispatch => {
     }
 }
 
+export const getRecipients = (result) => async dispatch => {
+    try {
+        return await axios.get(`${ROOT_URL}/getemployees`);
+    }
+    catch(e) {
+        console.log("error getting users") 
+    }
+}
+
 export const createUser = (formProps, callback) => async dispatch => {
     try {
         const response = await axios.post(`${ROOT_URL}/signup`, formProps);

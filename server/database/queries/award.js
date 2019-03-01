@@ -22,4 +22,15 @@ module.exports = {
             })
         })
     },
+    getEmployees: function() {
+        return new Promise(function(resolve, reject) {
+            //const params = [firstName, lastName];
+            mysql.pool.query('SELECT user_id, CONCAT(first_name, " ", last_name) as name FROM user WHERE admin = 0', 
+            function(err, data) {
+                if (err) reject(err);
+                resolve(data);
+            })
+        })        
+    }
+
 }
