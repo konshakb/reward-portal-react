@@ -34,8 +34,6 @@ class CreateAward extends Component {
         };
     }
 
-    
-    
     componentDidMount() {
         this.setState({
             user_id: this.props.user_id
@@ -43,7 +41,15 @@ class CreateAward extends Component {
         this.props.getRecipients()
           .then(response => {
             console.log("response says", response);
-            this.setState({ employees: response.data });
+            let users = response.data
+            for(let i = 0; i < users.length; i++){
+                users[i].value = users[i].user_id;
+                users[i].text = users[i].name;
+                users[i].key = users[i].user_id;
+                delete users[i].user_id;
+                delete users[i].name;
+            }
+            this.setState({ employees: users });
           })
           .catch(error => console.log(error.response));
       }
@@ -63,10 +69,11 @@ class CreateAward extends Component {
         const { handleSubmit } = this.props; 
         console.log("senderID is ", this.state.user_id)
         console.log(this.state.employees)
-        let employees = this.state.employees;
-        let userOptions = employees.map((employee) =>
-                <option key={employee.user_id}>{employee.name}</option>
-            );
+        let users = this.state.employees;
+
+
+        console.log("useroptions", users)
+
         return (
             <div className='createaward'>
                 <style>{`body > div,
@@ -86,13 +93,11 @@ class CreateAward extends Component {
                         <Form size='large' onSubmit={handleSubmit(this.onSubmit)}>
                             <Segment stacked>
                                 <Field name="awardType" component={semanticFormField} as={Form.Dropdown} options={awardTypeOptions} type="text" placeholder="Choose Type of Award" />
-                                <Field name="recipientID" component={semanticFormField} as={Form.Dropdown} options={userOptions} type="text" placeholder="Choose Award Recipient" />
-                                {/* <Field name="firstName" component={semanticFormField} as={Form.Input} icon='user' iconPosition='left' type="text" placeholder="First Name" />
-                                <Field name="lastName" component={semanticFormField} as={Form.Input} icon='user' iconPosition='left' type="text" placeholder="Last Name" /> */}
+                                <Field name="recipientID" component={semanticFormField} as={Form.Dropdown} options={this.state.employees} type="text" placeholder="Choose Award Recipient" />
                                 <Field name="email" component={semanticFormField} as={Form.Input} icon='mail' iconPosition='left' type="text" placeholder="Email" />
                                 <Field name="date" component={semanticFormField} as={Form.Input} icon='calendar' iconPosition='left' type="date"/>
                                 <Field name="time" component={semanticFormField} as={Form.Input} icon='clock' iconPosition='left' type="time" />
-                                <div>{this.props.errorMessage}</div>
+                                {/* <div>{this.props.errorMessage}</div> */}
                                 <Button color='teal' fluid size='large'>
                                     Submit
                                 </Button>
