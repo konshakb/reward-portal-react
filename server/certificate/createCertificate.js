@@ -2,37 +2,38 @@ const mysql = require('../database/dbcon.js');
 const latex = require('node-latex')
 const path = require('path')
 const fs = require('fs')
+const mailCert = require("../certificate/mailCertificate")
 
 // stupid windows, will fix later
-const sig_path = path.resolve('./signatures').replace(/\\/g, '/') + '/';
-const bg_path = path.resolve('./').replace(/\\/g, '/') + '/';
+const sig_path = path.resolve('./certificate/signatures').replace(/\\/g, '/') + '/';
+const bg_path = path.resolve('./certificate/').replace(/\\/g, '/') + '/';
 
-function sleep (time) {
+module.exports = {
+sleep: function(time) {
 	return new Promise((resolve) => setTimeout(resolve, time));
-}
+},
 
-function mailCert(certInfo) {
-	sleep(5000).then(() => {
-		const { email } = require("./mailCertificate.js")
-		email(certInfo);
+mailCert: function(certInfo) {
+	module.exports.sleep(5000).then(() => {
+		mailCert.email(certInfo);
 	  })
-}
+},
 
 // builds latex file and outputs to PDF in current dir
-function makePDF(certInfo) {
-	const input = fs.createReadStream("./temp_cert.tex")
-	const output = fs.createWriteStream('./certificate.pdf')
+makePDF: function(certInfo) {
+	const input = fs.createReadStream("./certificate/temp_cert.tex")
+	const output = fs.createWriteStream('./certificate/certificate.pdf')
 	const pdf = latex(input)
 	
 	pdf.pipe(output)
 	pdf.on('error', err => console.error(err))
 	pdf.on('finish', () => console.log('PDF generated!'))
-	fs.unlinkSync("./temp_cert.tex") // delete temp file
-	mailCert(certInfo);
-}
+	//fs.unlinkSync("./certificate/temp_cert.tex") // delete temp file. This is causing a bug for some reason
+	module.exports.mailCert(certInfo);
+},
 
 
-function read(srcPath) {
+read: function(srcPath) {
     return new Promise(function (resolve, reject) {
         fs.readFile(srcPath, 'utf8', (err, data) => {
             if (err) {
@@ -43,8 +44,9 @@ function read(srcPath) {
 					RECIPIENT: certInfo.recipient,
 					SENDER: certInfo.sender,
 					DATE_AWARDED: certInfo.date,
+					// The following two fields need absolute paths since it will be hardcoded into the temp latex file
 					SIGNATURE: sig_path + certInfo.signature,
-					BACKGROUND_IMG: bg_path + 'bg.png'	// eventually will hardcode into latex template
+					BACKGROUND_IMG: bg_path + 'bg.png'	
 				};
 				results = data.replace(/TYPE_AWARD|RECIPIENT|SENDER|DATE_AWARDED|SIGNATURE|BACKGROUND_IMG/gi, (matched) =>{
 					return certFill[matched];
@@ -53,9 +55,9 @@ function read(srcPath) {
             }
         });
     })
-}
+},
 
-function write(savPath, data) {
+write: function(savPath, data) {
     return new Promise(function (resolve, reject) {
         fs.writeFile(savPath, data, 'utf8', (err)=>{
             if (err) {
@@ -65,19 +67,18 @@ function write(savPath, data) {
             }
         });
     })
-}
+},
 
-function editTemplate(certInfo) {
-	read("./cert_template.tex").then(function(results){
-	return write("./temp_cert.tex",results);
+editTemplate: function(certInfo) {
+	module.exports.read("./certificate/cert_template.tex").then(function(results){
+	return module.exports.write("./certificate/temp_cert.tex",results);
 	 }).then(function(){
-		makePDF(certInfo) 
+		module.exports.makePDF(certInfo) 
 	 })
-}
+},
 
-function getAwardType(awardID) {
+getAwardType: function(awardID, formEmail) {
 	certInfo = {}
-	mysql.pool.connect()
 	mysql.pool.query(
 	`SELECT award_type.award_name 
 	FROM (award INNER JOIN award_type on award.type = award_type.award_type_id) 
@@ -87,13 +88,13 @@ function getAwardType(awardID) {
 		else {
 			var awardType = JSON.parse(JSON.stringify(results[0]));
 			certInfo.awardType = awardType.award_name;
-			getRecipient(awardID, certInfo);
+			module.exports.getRecipient(awardID, certInfo, formEmail);
 			
 		}
   });
-}
+},
 
-function getRecipient(awardID, certInfo) {
+getRecipient: function(awardID, certInfo, formEmail) {
 	mysql.pool.query(
 	`SELECT CONCAT(user.first_name, " ", user.last_name) AS full_name, user.email 
 	FROM (award INNER JOIN user on award.recipient_id = user.user_id) 
@@ -103,13 +104,18 @@ function getRecipient(awardID, certInfo) {
 		else {
 			var recipient = JSON.parse(JSON.stringify(results[0]));
 			certInfo.recipient = recipient.full_name;
-			certInfo.email = recipient.email;
-			getSender(awardID, certInfo);
+			if (recipient.email != formEmail) {
+				certInfo.email = (recipient.email + ', ' + formEmail);
+			} 
+			else {
+				certInfo.email = recipient.email;
+			}
+			module.exports.getSender(awardID, certInfo);
 		}
   });
-}
+},
 
-function getSender(awardID, certInfo) {
+getSender: function(awardID, certInfo) {
 	mysql.pool.query(
 	`SELECT CONCAT(user.first_name, " ", user.last_name) AS full_name, user.signature_path 
 	FROM (award INNER JOIN user on award.sender_id = user.user_id) 
@@ -120,12 +126,12 @@ function getSender(awardID, certInfo) {
 			var sender = JSON.parse(JSON.stringify(results[0]));
 			certInfo.sender = sender.full_name;
 			certInfo.signature = sender.signature_path;
-			getDate(awardID, certInfo);
+			module.exports.getDate(awardID, certInfo);
 		}
   });
-}
+},
 
-function getDate(awardID, certInfo) {
+getDate: function(awardID, certInfo) {
 	mysql.pool.query(
 	`SELECT DATE_FORMAT(award_date, "%m/%d/%Y") AS award_date 
 	FROM award WHERE award_id = ?;`, awardID, 
@@ -134,10 +140,8 @@ function getDate(awardID, certInfo) {
 		else {
 			var date = JSON.parse(JSON.stringify(results[0]));
 			certInfo.date = date.award_date;
-			mysql.pool.end()
-			editTemplate(certInfo);
+			module.exports.editTemplate(certInfo);
 		}
   });
 }
-
-getAwardType(38);
+}

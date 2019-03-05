@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const oauth = require('./oauth.json')
-const path = require('path')
-const cert_path = path.resolve('./').replace(/\\/g, '/') + '/';
+// const path = require('path')
+// const cert_path = path.resolve('./').replace(/\\/g, '/') + '/';
 
  module.exports = {
      email: function(certInfo) {
@@ -28,7 +28,7 @@ const cert_path = path.resolve('./').replace(/\\/g, '/') + '/';
         <br>Sincerely,<br> The Nihal Team<br>`,
         attachments: {
             filename: 'certificate.pdf',
-            path: cert_path + 'certificate.pdf' 
+            path: './certificate/certificate.pdf' 
         }
     };
 
