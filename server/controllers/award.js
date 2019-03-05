@@ -1,5 +1,5 @@
 const Award = require('../database/queries/award');
-
+const cert = require('../certificate/createCertificate')
 
 exports.createaward = function(req, res, next) {
     const recipientID = req.body.recipientID;
@@ -20,6 +20,7 @@ exports.createaward = function(req, res, next) {
         Award.createAward(recipientID, senderID, awardType, date, time)
             .then(result => {
             console.log('Result of award', result);
+            cert.getAwardType(result.insertId);
             res.send(result);
             })
             .catch(reject => {
