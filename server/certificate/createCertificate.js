@@ -5,8 +5,8 @@ const fs = require('fs')
 const mailCert = require("../certificate/mailCertificate")
 
 // stupid windows, will fix later
-// const sig_path = path.resolve('./signatures').replace(/\\/g, '/') + '/';
-// const bg_path = path.resolve('./').replace(/\\/g, '/') + '/';
+const sig_path = path.resolve('./certificate/signatures').replace(/\\/g, '/') + '/';
+const bg_path = path.resolve('./certificate/').replace(/\\/g, '/') + '/';
 
 module.exports = {
 sleep: function(time) {
@@ -28,7 +28,7 @@ makePDF: function(certInfo) {
 	pdf.pipe(output)
 	pdf.on('error', err => console.error(err))
 	pdf.on('finish', () => console.log('PDF generated!'))
-	fs.unlinkSync("./certificate/temp_cert.tex") // delete temp file
+	//fs.unlinkSync("./certificate/temp_cert.tex") // delete temp file. This is causing a bug for some reason
 	module.exports.mailCert(certInfo);
 },
 
@@ -45,9 +45,8 @@ read: function(srcPath) {
 					SENDER: certInfo.sender,
 					DATE_AWARDED: certInfo.date,
 					// The following two fields need absolute paths since it will be hardcoded into the temp latex file
-					// TODO: give signature and background_img absolute paths
-					SIGNATURE: 'C:/Users/Krista/Desktop/CSC/Capstone/server/certificate/signatures/' + certInfo.signature,
-					BACKGROUND_IMG: 'C:/Users/Krista/Desktop/CSC/Capstone/server/certificate/bg.png'	
+					SIGNATURE: sig_path + certInfo.signature,
+					BACKGROUND_IMG: bg_path + 'bg.png'	
 				};
 				results = data.replace(/TYPE_AWARD|RECIPIENT|SENDER|DATE_AWARDED|SIGNATURE|BACKGROUND_IMG/gi, (matched) =>{
 					return certFill[matched];
@@ -78,7 +77,7 @@ editTemplate: function(certInfo) {
 	 })
 },
 
-getAwardType: function(awardID) {
+getAwardType: function(awardID, formEmail) {
 	certInfo = {}
 	mysql.pool.query(
 	`SELECT award_type.award_name 
@@ -89,13 +88,13 @@ getAwardType: function(awardID) {
 		else {
 			var awardType = JSON.parse(JSON.stringify(results[0]));
 			certInfo.awardType = awardType.award_name;
-			module.exports.getRecipient(awardID, certInfo);
+			module.exports.getRecipient(awardID, certInfo, formEmail);
 			
 		}
   });
 },
 
-getRecipient: function(awardID, certInfo) {
+getRecipient: function(awardID, certInfo, formEmail) {
 	mysql.pool.query(
 	`SELECT CONCAT(user.first_name, " ", user.last_name) AS full_name, user.email 
 	FROM (award INNER JOIN user on award.recipient_id = user.user_id) 
@@ -105,7 +104,12 @@ getRecipient: function(awardID, certInfo) {
 		else {
 			var recipient = JSON.parse(JSON.stringify(results[0]));
 			certInfo.recipient = recipient.full_name;
-			certInfo.email = recipient.email;
+			if (recipient.email != formEmail) {
+				certInfo.email = (recipient.email + ', ' + formEmail);
+			} 
+			else {
+				certInfo.email = recipient.email;
+			}
 			module.exports.getSender(awardID, certInfo);
 		}
   });

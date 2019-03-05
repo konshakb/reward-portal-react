@@ -1,0 +1,63 @@
+\documentclass[12pt, letter paper, landscape]{article}
+\usepackage[landscape]{geometry}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{fix-cm}    
+\usepackage{adjustbox}
+\usepackage{wallpaper}
+\pagenumbering{gobble}
+
+\makeatletter
+\newcommand\HUGE{\@setfontsize\Huge{70}{80}}
+\newcommand\presented{\@setfontsize\Huge{40}{48}}
+\makeatother    
+\definecolor{cyan}{RGB}{0, 153, 224}
+
+\begin{document}
+
+\TileWallPaper{1\paperwidth}{1\paperheight}{C:/Users/Krista/Desktop/CSC/Capstone/server/certificate/bg.png}
+
+\begin{center}
+    {\itshape \color{cyan} \HUGE {Employee of the Week}}
+\end{center}
+
+\vspace{8mm}
+
+\begin{center}
+    \begin{adjustbox}{max width=600pt}
+        \Huge Presented to: 
+        \presented {\underline{Growl Tiger}}
+    \end{adjustbox}
+\end{center}
+
+\vspace{7mm}
+
+\begin{center}
+    \Huge \underline{Steve Irwin} thanks you for your exceptional performance!
+\end{center}
+
+\vspace{18mm}
+
+\begin{center}
+    \begin{tabular}{ll}
+        \makebox[2.5in]{\includegraphics[width=35mm, height=20mm]{C:/Users/Krista/Desktop/CSC/Capstone/server/certificate/signatures/sigpad.png}}
+    \end{tabular}\hspace{2.3in}
+    \begin{tabular}{ll}
+        \makebox[2.5in]{\Large 03/05/2019}
+    \end{tabular}
+\end{center}
+
+\vspace*{-12mm}
+
+\begin{center}
+    \begin{tabular}{ll}
+        \makebox[2.5in]{\hrulefill}\\
+        Signed
+    \end{tabular}\hspace{2.3in}
+    \begin{tabular}{ll}
+        \makebox[2.5in]{\hrulefill}\\
+        Date
+    \end{tabular}
+\end{center}
+
+\end{document}
