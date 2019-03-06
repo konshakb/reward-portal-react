@@ -21,6 +21,34 @@ export const getRecipients = (result) => async dispatch => {
     }
 }
 
+export const getAwards = (user_id) => async dispatch => {
+    try {
+        return await axios.get(`${ROOT_URL}/getawards`, {
+            params: {
+                user_id: user_id
+            }
+        });
+    }
+    catch(e) {
+        console.log("error getting awards") 
+    }
+}
+
+export const deleteAwards = (award_ids, callback) => async dispatch => {
+    try {
+        const response = await axios.delete(`${ROOT_URL}/deleteawards`, {
+            data: {
+                award_ids: award_ids
+            }
+        });
+        callback();
+
+    }
+    catch(e) {
+        console.log("error deleting awards") 
+    }
+}
+
 export const createUser = (formProps, callback) => async dispatch => {
     try {
         const response = await axios.post(`${ROOT_URL}/signup`, formProps);
@@ -44,6 +72,9 @@ export const createAward = (formProps, callback) => async dispatch => {
         //dispatch({ type: GET_EMPLOYEE, payload: 'Must be a user to create award' });
     }
 }
+
+
+
 
 export const signup = (formProps, callback) => async dispatch => {
     // formProps contains { email: '', password: '' }

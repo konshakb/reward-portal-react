@@ -18,6 +18,7 @@ import CreateUser from './containers/CreateUser';
 import HomepageHeading from './containers/Landing';
 import Profile from './containers/Profile';
 import CreateAward from './containers/CreateAward';
+import ViewAwards from './containers/ViewAwards';
 
 const persistConfig = {
     key: 'root',
@@ -47,7 +48,8 @@ const routing = (
                 <Route path='/admin-feature' component={AdminFeature} />     
                 <Route path='/create-user' component={CreateUser} />     
                 <Route path='/profile' component={Profile} />
-                <Route path='/createaward' component={CreateAward} />         
+                <Route path='/createaward' component={CreateAward} />
+                <Route path='/viewawards' component={ViewAwards} />         
                 {/* <Route path='/admin-table' component={AdminTable} />      */}
             </Homepage>
         </Router>
