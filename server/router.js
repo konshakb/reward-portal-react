@@ -11,4 +11,5 @@ module.exports = function(app) {
     app.get('/employee', Authentication.getEmployee)
     app.post('/createaward', Award.createaward);
     app.get('/getemployees', Award.getemployees);
+    app.get('/getawards', Award.getawards);
 }

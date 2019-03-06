@@ -20,5 +20,20 @@ module.exports = {
                 resolve(data);
             })
         })        
+    },
+    getAwards: function(user_id) {
+        return new Promise(function(resolve, reject) {
+            const params = [user_id];
+            mysql.pool.query(
+            `select award_id, CONCAT(user.first_name, ' ', user.last_name) as name, award_type.award_name, DATE_FORMAT(award_date, "%m/%d/%Y") AS date FROM
+            (award INNER JOIN user on award.recipient_id = user.user_id)
+            INNER JOIN award_type on award.type = award_type.award_type_id
+            WHERE award.sender_id=?
+            ORDER BY award_date DESC`, params,
+            function(err, data) {
+                if (err) reject(err);
+                resolve(data);
+            })
+        })        
     }
 }

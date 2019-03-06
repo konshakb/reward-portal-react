@@ -51,6 +51,11 @@ class Navbar extends Component {
                                 Create Award
                             </Button>
                         </Link>
+                        <Link to='/viewawards'>
+                            <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
+                                View Awards
+                            </Button>
+                        </Link>
                          <Link to='/signout'>
                             <Button as='a' inverted={!true} primary={true} style={{ marginLeft: '0.5em' }}>
                                 Sign Out

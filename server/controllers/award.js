@@ -31,3 +31,17 @@ exports.getemployees = function(req, res) {
         console.log(reject)
     })    
 }
+
+
+exports.getawards = function(req, res) {
+    const user_id = req.query.user_id;
+    console.log("my user id", user_id)
+    Award.getAwards(user_id)
+    .then(result => {
+    console.log('Result of awards', result);
+    res.send(result);
+    })
+    .catch(reject => {
+        console.log(reject)
+    })    
+}
