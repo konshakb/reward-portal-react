@@ -34,6 +34,20 @@ export const getAwards = (user_id) => async dispatch => {
     }
 }
 
+export const deleteAwards = (award_ids, callback) => async dispatch => {
+    try {
+        const response = await axios.delete(`${ROOT_URL}/deleteawards`, {
+            data: {
+                award_ids: award_ids
+            }
+        });
+        callback();
+
+    }
+    catch(e) {
+        console.log("error deleting awards") 
+    }
+}
 
 export const createUser = (formProps, callback) => async dispatch => {
     try {

@@ -45,3 +45,16 @@ exports.getawards = function(req, res) {
         console.log(reject)
     })    
 }
+
+
+exports.deleteawards = function(req, res) {
+    const award_ids = req.body.award_ids;
+    console.log("my award ids", award_ids)
+    Award.deleteAwards(award_ids)
+    .then(result => {
+    res.send(result);
+    })
+    .catch(reject => {
+        console.log(reject)
+    })    
+}

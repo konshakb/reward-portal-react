@@ -12,4 +12,5 @@ module.exports = function(app) {
     app.post('/createaward', Award.createaward);
     app.get('/getemployees', Award.getemployees);
     app.get('/getawards', Award.getawards);
+    app.delete('/deleteawards', Award.deleteawards);
 }

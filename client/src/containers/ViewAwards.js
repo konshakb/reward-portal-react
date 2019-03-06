@@ -19,6 +19,20 @@ class ViewAwards extends Component {
         };
     }
 
+
+    onSubmit = (formProps) => {
+        //formProps.senderID = this.state.user_id;
+        let selections = this.state.selections;
+        let deleteIDs = Object.keys(selections)
+        formProps = deleteIDs
+        this.props.deleteAwards(formProps, () => {
+            // TODO: Determine page to redirect to after award deleted
+          this.props.history.push('/');
+        });
+      };
+
+
+      
     componentDidMount() {
         this.setState({
             user_id: this.props.user_id
@@ -33,15 +47,13 @@ class ViewAwards extends Component {
           .catch(error => console.log(error.response));
       }
 
-    onSubmit = (formProps) => {
-        // formProps.senderID = this.state.user_id;
-        // console.log("form props:", formProps);
-        // this.props.createAward(formProps, () => {
-        //     console.log(formProps);
-        //     // TODO: Determine page to redirect to after award created
-        //   this.props.history.push('/');
-        // });
-      };
+    //   componentDidUpdate(prevState) {
+    //     if (this.state.awards.length != prevState.awards.length) {
+    //         this.setState({
+    //             awards: this.state.awards
+    //         })
+    //     }
+    // }  
 
     handleSelect = (id) => {
         console.log("my select", this.state.selections)
@@ -72,7 +84,14 @@ class ViewAwards extends Component {
                         padding-top: 5em
                         }
                 `}</style>
-                    <Table collapsing compact celled definition>
+                <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
+                    <Grid.Column style={{ maxWidth: 800 }}>
+                    <Header as='h2' color='teal' textAlign='center'>
+                        Given Awards
+                    </Header>
+                    <Form size='large' onSubmit={handleSubmit(this.onSubmit)}>
+                    <Segment stacked>
+                    <Table celled>
                     <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell />
@@ -101,9 +120,16 @@ class ViewAwards extends Component {
                     </Table.Row>))}
                     </Table.Body>
                     </Table>
+                    <Button color='teal' fluid size='large'>
+                        Delete Selected Awards
+                    </Button>
+                    </Segment>
+                </Form>
+                </Grid.Column>
+                </Grid>
             </div>
         )
-                    }
+    }
 }
 
 // function mapStateToProps(state) {
