@@ -11,7 +11,7 @@
   "dependencies": {
     "async": "^2.0.0-rc.5",
     "body-parser": "^1.15.1",
-    "express": "^4.13.2",
+    "express": "^4.17.3",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.13.0",
     "mysql": "^2.10.2",
