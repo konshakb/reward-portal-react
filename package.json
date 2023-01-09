@@ -24,7 +24,7 @@
     "node-latex": "^2.4.4",
     "nodemailer": "^5.1.1",
     "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0",
+    "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "xoauth2": "^1.2.0",
